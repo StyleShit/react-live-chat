@@ -1,0 +1,12 @@
+{
+  "name": "live-chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "cd server && npm start",
+    "client": "cd client && npm start"
+  },
+  "author": "",
+  "license": "ISC"
+}
