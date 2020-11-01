@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import './App.css';
+import { ChatContainer } from './components/ChatContainer';
 
 function App()
 {
@@ -19,15 +20,7 @@ function App()
 
 	return (
 		<div className="App">
-			<h1>
-				It Works!
-			</h1>
-
-			{ response &&
-				<div>
-					<strong>Server Says: </strong>{ response }
-				</div>
-			}
+			<ChatContainer />
 		</div>
 	);
 }

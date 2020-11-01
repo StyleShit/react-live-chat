@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap');
 
+*
+{
+    box-sizing: border-box;
+}
+
 body
 {
     font-family: Poppins;
@@ -10,25 +15,4 @@ body
     align-items: center;
     justify-content: center;
     background-image: linear-gradient( 45deg, #0f2027, #2c5364 );
-}
-
-.App
-{
-    text-align: center;
-}
-
-.App h1
-{
-    font-size: 3rem;
-    font-weight: normal;
-}
-
-.App > div
-{
-    font-size: 1.5rem;
-}
-
-.App > div strong
-{
-    color: #3d5af1;
 }

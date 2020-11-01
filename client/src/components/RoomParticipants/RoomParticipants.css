@@ -1,0 +1,66 @@
+.room-participants
+{
+    grid-area: room-participants;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var( --secondary-color );
+    padding: 2rem;
+    box-shadow: 5px 0 10px 0 rgba( 0,0,0,.3 );
+}
+
+.room-participants h3
+{
+    margin: 0 0 1rem;
+}
+
+.room-participants ul
+{
+    margin: 0;
+    padding: 0;
+}
+
+.room-participants ul
+{
+    list-style: none;
+    overflow-y: auto;
+}
+
+.room-participants ul li
+{
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.room-participants ul li::before
+{
+    content: '👌';
+    margin-right: 5px;
+    /* display: block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -.14em;
+    margin-left: -1em;
+    height: .2em;
+    width: .2em;
+    border: 2px solid transparent;
+    border-top-color: var( --primary-color );
+    border-right-color: var( --primary-color );
+    transform: rotate( 45deg ); */
+}
+
+/* .room-participants ul li:nth-child( 2n )::before
+{
+    content: '🤙';
+}
+
+.room-participants ul li:nth-child( 3n )::before
+{
+    content: '🤘';
+}
+
+.room-participants ul li:nth-child( 4n )::before
+{
+    content: '👋';
+} */
