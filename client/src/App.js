@@ -16,6 +16,12 @@ function App()
 			setResponse( message );
 		});
 
+
+		// close connection on unmount
+		return () => {
+			socket.disconnect()
+		};
+
 	}, []);
 
 	return (
