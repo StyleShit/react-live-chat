@@ -1,5 +1,6 @@
 const express = require( 'express' );
 const io = require( 'socket.io' )();
+const { handleConnection, handleChatMessage, handleJoinRoom, handleDisconnect } = require( './event-handlers' );
 
 
 // init the express server
@@ -25,7 +26,19 @@ io.listen( server );
 // handle new socket connection
 io.on( 'connection', socket => {
 
-    console.log( 'New connection:', socket.id );
-    socket.emit( 'message', `Hello there, seems like it's working` );
+    handleConnection( socket );
 
-})
+    // on user join to room
+    socket.on( 'join-room', ( data ) => { handleJoinRoom( socket, data ) } );
+
+    // on new chat message from user
+    socket.on( 'chat-message', ( message ) => { handleChatMessage( socket, message ); } );
+
+    // on user disconnect
+    socket.on( 'disconnect', () => { handleDisconnect( socket ); } );
+
+});
+
+
+// export socket io server
+exports.io = io;
