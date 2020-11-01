@@ -1,34 +1,51 @@
 import { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-import './App.css';
+import { useSocket } from './contexts/SocketContext';
+import withSocket from './HOCs/withSocket';
 import { ChatContainer } from './components/ChatContainer';
+import './App.css';
 
 function App()
 {
-	const [ response, setResponse ] = useState( '' );
+	// store messages from server
+	const [ messages, setMessages ] = useState( [] );
+
+	// use socket
+	const socket = useSocket();
+
+
+	// join room & fetch messages on mount
 	useEffect( () => {
 
-		// connect to socket server on mount
-		const socket = io( 'http://localhost:3001' );
+		// join room
+		socket.emit( 'join-room', { userName: 'StyleShit', room: 'test-room'} );
 
-		// on message from server
-		socket.on( 'message', message => {
-			setResponse( message );
+
+		// get chat history from server
+		socket.on( 'chat-history', ( history ) => {
+			setMessages( history );
 		});
 
+
+		// new message from server
+		socket.on( 'chat-message', ( message ) => {
+			setMessages( prev => {
+				return [ ...prev, message ];
+			});
+		});
 
 		// close connection on unmount
 		return () => {
 			socket.disconnect()
 		};
 
-	}, []);
+		// eslint-disable-next-line
+	}, [] );
 
 	return (
 		<div className="App">
-			<ChatContainer />
+			<ChatContainer messages={ messages } />
 		</div>
 	);
 }
 
-export default App;
+export default withSocket( App );

@@ -5,16 +5,16 @@ import { ChatTitle } from '../ChatTitle';
 import { RoomParticipants } from '../RoomParticipants';
 import './ChatContainer.css';
 
-function ChatContainer()
+function ChatContainer({ messages })
 {
     return (
         <div className="chat-container">
             <RoomParticipants />
             <ChatTitle />
-            <ChatMessages />
+            <ChatMessages messages={ messages } />
             <ChatForm />
         </div>
     )
 }
 
-export default ChatContainer
+export default ChatContainer;

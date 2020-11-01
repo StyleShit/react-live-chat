@@ -1,66 +1,44 @@
 import React from 'react';
+import { useSocket } from '../../contexts/SocketContext';
 import './ChatMessages.css';
 
-function ChatMessages()
+function ChatMessages({ messages })
 {
+    // get socket id
+    const socket = useSocket();
+    const id = socket.id;
+
     return (
         <div className="chat-messages">
-            <div className="message message-in">
-                <span className="message-author">Evyatar Daud</span>
-                lorem ipsum 123
-                <span className="message-time">16:05</span>
-            </div>
 
-            <div className="message message-out">
-                    lorem ipsum 456
-                <span className="message-time">16:05</span>
-            </div>
+            {
+                // TODO: create different component for message
+                messages.map(( { author, time, message }, i ) => {
 
-            <div className="message message-in">
-                <span className="message-author">Evyatar Daud</span>
-                lorem ipsum 123
-                <span className="message-time">16:05</span>
-            </div>
+                    const formattedTime = new Date( time ).toLocaleTimeString( [], { hour: '2-digit', minute: '2-digit' } );
+                    
+                    const chatbotClass = author.id === -1 ? 'message-chatbot' : '';
+                    const inOutClass = author.id === id ? 'message-out' : 'message-in';
 
-            <div className="message message-out">
-                    lorem ipsum 456
-                <span className="message-time">16:05</span>
-            </div>
+                    return (
+                        <div className={ `message ${ inOutClass } ${ chatbotClass }` } key={ i }>
 
-            <div className="message message-in">
-                <span className="message-author">Evyatar Daud</span>
-                lorem ipsum 123
-                <span className="message-time">16:05</span>
-            </div>
+                            { author.id !== id &&
+                                <span className="message-author">{ author.userName }</span>   
+                            }
+                            
+                            { message }
 
-            <div className="message message-out">
-                    lorem ipsum 456
-                <span className="message-time">16:05</span>
-            </div>
+                            <span className="message-time">{ formattedTime }</span>
 
-            <div className="message message-in">
-                <span className="message-author">Evyatar Daud</span>
-                lorem ipsum 123
-                <span className="message-time">16:05</span>
-            </div>
+                        </div>
+                    );
 
-            <div className="message message-out">
-                    lorem ipsum 456
-                <span className="message-time">16:05</span>
-            </div>
+                })
+            }
 
-            <div className="message message-in">
-                <span className="message-author">Evyatar Daud</span>
-                lorem ipsum 123
-                <span className="message-time">16:05</span>
-            </div>
-
-            <div className="message message-out">
-                    lorem ipsum 456
-                <span className="message-time">16:05</span>
-            </div>
         </div>
     )
 }
 
-export default ChatMessages
+export default ChatMessages;
