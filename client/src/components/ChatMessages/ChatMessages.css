@@ -38,7 +38,7 @@
 .chat-messages .message-in
 {
     --color: #DDD;
-    padding-top: 1.2rem;
+    padding-top: .5rem;
     background-color: var( --color );
     color: #222;
     align-self: flex-start;
@@ -80,8 +80,8 @@
 {
     color: var( --primary-color );;
     font-weight: bold;
-    left: 5px;
-    top: 2px;
+    position: relative;
+    display: block;
 }
 
 .chat-messages .message-in .message-time
