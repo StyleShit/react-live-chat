@@ -1,12 +1,47 @@
-.chat-form
+.chat-form-container
 {
     grid-area: chat-form;
+    position: relative;
     background-color: #EEE;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.chat-form-container .typing-indicator
+{
+    position: absolute;
+    color: #333;
+    background-color: #FFF;
+    padding: .5rem .5rem .5rem 2rem;
+    bottom: 100%;
+    left: 0;
+    margin-left: 10px;
+}
+
+.chat-form-container .typing-indicator:not( :empty )::before
+{
+    content: '';
+    display: block;
+    position: absolute;
+    height: .8em;
+    width: .8em;
+    top: 50%;
+    margin-top: -.5rem;
+    left: .5rem;
+    border: 2px solid var( --primary-color );
+    border-top-color: transparent;
+    border-radius: 100rem;
+    animation: .3s spin infinite linear;
+}
+
+.chat-form
+{
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     font-size: 1.5rem;
-    padding: 2rem;
 }
 
 .chat-form input[type="text"]
@@ -45,4 +80,11 @@
 .chat-form input[type="submit"]:active
 {
     background-color: var( --primary-color-darker );
+}
+
+
+@keyframes spin
+{
+    from { transform: rotate( 0 ); }
+    to { transform: rotate( 360deg ); }
 }
