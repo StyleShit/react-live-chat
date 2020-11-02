@@ -19,11 +19,13 @@ function ChatForm()
         e.preventDefault();
 
         // prevent empty message
-        if( !message )
+        const trimmedMessage = message.trim();
+
+        if( !trimmedMessage )
             return;
 
         // send message to the server
-        socket.emit( 'chat-message', message );
+        socket.emit( 'chat-message', trimmedMessage );
 
         // reset the message and focus on the input
         setMessage( '' );
@@ -118,7 +120,7 @@ function ChatForm()
                     dir="auto"
                     placeholder="💬 Type your message..." 
                     value={ message } 
-                    onChange={ ( e ) => { setMessage( e.target.value.trim() ); } }
+                    onChange={ ( e ) => { setMessage( e.target.value ); } }
                     onKeyUp={ handleKeyUp }
                     ref={ inputRef }
                 />
