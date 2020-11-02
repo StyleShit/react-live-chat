@@ -1,0 +1,72 @@
+.chat-login
+{
+    height: 85vh;
+    width: 85vw;
+    padding: 5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 3rem;
+    box-shadow: 0 0 20px 0 rgba( 0,0,0,.4 );
+    background-color: var( --primary-color );
+    color: #FFF;
+}
+
+.chat-login .login-title
+{
+    text-align: center;
+}
+
+.chat-login .login-title h1
+{
+    margin: 0;
+    font-size: 2.8rem;
+    text-shadow: 0 0 15px rgba( 0,0,0,.4 ), 0 0 5px rgba( 0,0,0,.5 );
+}
+
+.chat-login .login-title span
+{
+    font-size: 1.2rem;
+    color: var( --secondary-color );
+}
+
+.chat-login form
+{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+    width: 100%;
+    max-width: 300px;
+}
+
+.chat-login form input,
+.chat-login form select
+{
+    outline: none;
+    font-family: Poppins, sans-serif;
+    border: none;
+    padding: .5rem 1rem;
+    border-radius: 100rem;
+    transition: .3s all;
+}
+
+.chat-login form input:focus,
+.chat-login form input[type="submit"]:hover,
+.chat-login form select:focus
+{
+    box-shadow: 0 0 10px 0 rgba( 0,0,0,.5 );
+}
+
+.chat-login form input[type="submit"]
+{
+    font-size: 1.2rem;
+    background-color: var( --secondary-color );
+    color: #FFF;
+}
+
+.chat-login form input[type="submit"]:hover,
+.chat-login form input[type="submit"]:focus
+{
+    background-color: var( --secondary-color-darker );
+}
