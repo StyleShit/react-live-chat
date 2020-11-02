@@ -14,6 +14,10 @@ function ChatForm()
 
         e.preventDefault();
 
+        // prevent empty message
+        if( !message )
+            return;
+
         // send message to the server
         socket.emit( 'chat-message', message );
         
@@ -30,7 +34,7 @@ function ChatForm()
                 dir="auto"
                 placeholder="💬 Type your message..." 
                 value={ message } 
-                onChange={ ( e ) => { setMessage( e.target.value ); } }
+                onChange={ ( e ) => { setMessage( e.target.value.trim() ); } }
                 ref={ inputRef }
             />
             <input type="submit" value="🚀" />
