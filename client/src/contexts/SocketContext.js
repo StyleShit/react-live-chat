@@ -6,7 +6,7 @@ import io from 'socket.io-client';
 const SocketContext = React.createContext( null );
 
 // init socket
-const socket = io( 'http://localhost:3001' );
+const socket = io( process.env.REACT_APP_SOCKET_SERVER || window.location.host );
 
 
 // custom hook
