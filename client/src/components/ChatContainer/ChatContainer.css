@@ -1,7 +1,7 @@
 .chat-container
 {
-    height: 80vh;
-    width: 80vw;
+    height: 85vh;
+    width: 85vw;
     display: grid;
     box-shadow: 0 0 20px 0 rgba( 0,0,0,.4 );
     background-color: #FFF;
@@ -10,7 +10,7 @@
         "room-participants chat-messages"
         "room-participants chat-form";
     grid-template-rows: 100px 1fr 70px;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 300px 1fr;
     --primary-color: #3d5af1;
     --primary-color-darker: #2b43bb;
     --secondary-color: #303a52;
