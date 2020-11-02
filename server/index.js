@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require( 'express' );
 const io = require( 'socket.io' )();
 const PORT = process.env.PORT || 80;
-const { handleConnection, handleChatMessage, handleJoinRoom, handleDisconnect } = require( './event-handlers' );
+const { handleConnection, handleChatMessage, handleJoinRoom, handleDisconnect, handleStartTyping, handleStopTyping } = require( './event-handlers' );
 
 
 // init the express server
@@ -33,6 +33,12 @@ io.on( 'connection', socket => {
 
     // on new chat message from user
     socket.on( 'chat-message', ( message ) => { handleChatMessage( socket, message ); } );
+
+    // on user started typing
+    socket.on( 'start-typing', () => { handleStartTyping( socket ); } );
+
+    // on user stopped typing
+    socket.on( 'stop-typing', () => { handleStopTyping( socket ); } );
 
     // on user disconnect
     socket.on( 'disconnect', () => { handleDisconnect( socket ); } );

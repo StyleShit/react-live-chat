@@ -46,6 +46,22 @@ exports.handleChatMessage = ( socket, message ) => {
 };
 
 
+// handle user started typing
+exports.handleStartTyping = ( socket ) => {
+
+    setUserTyping( socket );
+
+}
+
+
+// handle user stopped typing
+exports.handleStopTyping = ( socket ) => {
+
+    setUserNotTyping( socket );
+
+}
+
+
 // handle disconnect
 exports.handleDisconnect = ( socket ) => {
 
@@ -102,10 +118,15 @@ const addUserToRoom = ( socket, room ) => {
 
     // set default values for room
     if( !rooms[room] )
-        rooms[room] = {};
+    {
+        rooms[room] = {
 
-    if( !rooms[room].participants )
-        rooms[room].participants = [];
+            participants: [],
+            messagesHistory: [],
+            typing: []
+            
+        };
+    }
 
     // add the user to the appropriate room in rooms array
     rooms[room].participants.push({ userName, id: socket.id });
@@ -147,14 +168,6 @@ const sendMessageToRoom = ( message, room, user = CHAT_BOT ) => {
     const { io } = require( './index' );
     io.to( room ).emit( 'chat-message', messageObject );
 
-
-    // set default values for room
-    if( !rooms[room] )
-        rooms[room] = {};
-        
-    if( !rooms[room].messagesHistory )
-        rooms[room].messagesHistory = [];
-
     // push the message to the history array
     rooms[room].messagesHistory.push( messageObject );
 
@@ -184,3 +197,48 @@ const formatMessage = ( message, user = CHAT_BOT ) => {
     };
 
 }
+
+
+// add user to typing array
+const setUserTyping = ( socket, notify = true ) => {
+
+    // remove user from typing array
+    setUserNotTyping( socket, false );
+
+    // get user & room
+    const user = users[socket.id];
+    const room = user.room;
+
+    // push user to typing array
+    rooms[room].typing.push( user );
+
+    // notify room
+    notify && notifyTypingToRoom( room );
+
+};
+
+
+// remove user from typing array
+const setUserNotTyping = ( socket, notify = true ) => {
+
+    // get user & room
+    const user = users[socket.id];
+    const room = user.room;
+
+    // remove user from typing array
+    rooms[room].typing = rooms[room].typing.filter( i => ( i.id !== socket.id ));
+
+    // notify room
+    notify && notifyTypingToRoom( room );
+
+};
+
+
+// notify room about who is typing
+const notifyTypingToRoom = ( room ) => {
+
+    // send the typing array to the room
+    const { io } = require( './index' );
+    io.to( room ).emit( 'room-typing', rooms[room].typing );
+
+};
