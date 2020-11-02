@@ -8,10 +8,8 @@ const { handleConnection, handleChatMessage, handleJoinRoom, handleDisconnect } 
 // init the express server
 const app = express();
 
-app.get( '/', ( req, res ) => {
-    res.send( 'It Works!' );
-});
-
+// serve static assets
+app.use( express.static( './public' ) );
 
 // listen to incoming HTTP connections
 const server = app.listen( PORT, () => {
