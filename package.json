@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "cd server && PORT=80 npm start",
     "server": "cd server && npm start",
     "client": "cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build:client": "cd client && npm install --production && npm run build && mkdir -p ../server/public && cp -r build/* ../server/public",
+    "build:server": "cd server && npm install --production",
+    "build": "npm run build:client && npm run build:server"
   },
   "author": "",
   "license": "ISC",
