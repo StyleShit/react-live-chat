@@ -1,23 +1,31 @@
 import React from 'react';
+import { useSocket } from '../../contexts/SocketContext';
 import './RoomParticipants.css';
 
-function RoomParticipants()
+function RoomParticipants({ participants })
 {
+    const socket = useSocket();
+
     return (
         <div className="room-participants">
             <h3>
                 Participants:
             </h3>
             <ul>
-                <li>Evyatar Daud</li>
-                <li>Melinda May</li>
-                <li>Daisy Johnson</li>
-                <li>Jemma Simmons</li>
-                <li>Leopold Fitz</li>
-                <li>Phillip Culson</li>
+                <li>You</li>
+
+                {
+                    participants.map( p => {
+
+                        return ( p.id !== socket.id ) 
+                            ? <li key={ p.id }>{ p.userName }</li> 
+                            : null;
+
+                    })
+                }
             </ul>
         </div>
     )
 }
 
-export default RoomParticipants
+export default RoomParticipants;

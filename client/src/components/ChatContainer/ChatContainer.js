@@ -5,11 +5,11 @@ import { ChatTitle } from '../ChatTitle';
 import { RoomParticipants } from '../RoomParticipants';
 import './ChatContainer.css';
 
-function ChatContainer({ messages })
+function ChatContainer({ messages, participants })
 {
     return (
         <div className="chat-container">
-            <RoomParticipants />
+            <RoomParticipants participants={ participants } />
             <ChatTitle />
             <ChatMessages messages={ messages } />
             <ChatForm />

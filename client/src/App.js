@@ -8,6 +8,7 @@ function App()
 {
 	// store messages from server
 	const [ messages, setMessages ] = useState( [] );
+	const [ participants, setParticipants ] = useState( [] );
 
 	// use socket
 	const socket = useSocket();
@@ -33,6 +34,11 @@ function App()
 			});
 		});
 
+		// server sent updated participants list
+		socket.on( 'chat-participants', ( participants ) => {
+			setParticipants( participants );
+		});
+
 		// close connection on unmount
 		return () => {
 			socket.disconnect()
@@ -43,7 +49,7 @@ function App()
 
 	return (
 		<div className="App">
-			<ChatContainer messages={ messages } />
+			<ChatContainer messages={ messages } participants={ participants } />
 		</div>
 	);
 }
