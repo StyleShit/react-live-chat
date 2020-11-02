@@ -12,6 +12,7 @@
 .chat-form input[type="text"]
 {
     color: #333;
+    outline: none;
     border: 1px solid rgba( 0,0,0,.2 );
     font-size: 1.2rem;
     padding: .5rem 1rem;

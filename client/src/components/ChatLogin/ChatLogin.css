@@ -44,7 +44,7 @@
 .chat-login form select
 {
     outline: none;
-    font-family: Poppins, sans-serif;
+    font-family: inherit;
     border: none;
     padding: .5rem 1rem;
     border-radius: 100rem;

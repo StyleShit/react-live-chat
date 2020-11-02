@@ -36,7 +36,9 @@ function ChatMessages({ messages })
                                 <span className="message-author">{ author.userName }</span>   
                             }
                             
-                            { message }
+                            <div className="message-content" dir="auto">
+                                { message }
+                            </div>
 
                             <span className="message-time">{ formattedTime }</span>
 

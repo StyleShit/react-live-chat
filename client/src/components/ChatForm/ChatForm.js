@@ -26,7 +26,8 @@ function ChatForm()
 
     return (
         <form action="#" className="chat-form" onSubmit={ handleSubmit }>
-            <input type="text" 
+            <input type="text"
+                dir="auto"
                 placeholder="💬 Type your message..." 
                 value={ message } 
                 onChange={ ( e ) => { setMessage( e.target.value ); } }
