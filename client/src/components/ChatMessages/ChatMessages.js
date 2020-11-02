@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useSocket } from '../../contexts/SocketContext';
 import './ChatMessages.css';
 
@@ -8,8 +8,17 @@ function ChatMessages({ messages })
     const socket = useSocket();
     const id = socket.id;
 
+    // scroll messages container on messages change
+    const messagesContainerRef = useRef( null );
+
+    useEffect(() => {
+        
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+
+    }, [ messages ]);
+
     return (
-        <div className="chat-messages">
+        <div className="chat-messages" ref={ messagesContainerRef }>
 
             {
                 // TODO: create different component for message
