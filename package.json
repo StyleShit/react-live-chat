@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cd server && PORT=80 npm start",
-    "server": "cd server && npm start",
+    "server": "cd server && npm run dev",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build:client": "cd client && npm install --production && npm run build && mkdir -p ../server/public && cp -r build/* ../server/public",
