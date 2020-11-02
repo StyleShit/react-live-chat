@@ -1,5 +1,7 @@
+require('dotenv').config();
 const express = require( 'express' );
 const io = require( 'socket.io' )();
+const PORT = process.env.PORT || 80;
 const { handleConnection, handleChatMessage, handleJoinRoom, handleDisconnect } = require( './event-handlers' );
 
 
@@ -12,9 +14,9 @@ app.get( '/', ( req, res ) => {
 
 
 // listen to incoming HTTP connections
-const server = app.listen( 3001, () => {
+const server = app.listen( PORT, () => {
 
-    console.log( 'Express server is running...' );
+    console.log( `Express server is running on port ${ PORT }...` );
 
 });
 
