@@ -113,6 +113,7 @@ const addUserToRoom = ( socket, room ) => {
     // notify other room participants that a new user has joined
     const { io } = require( './index' );
     io.to( socket.id ).emit( 'joined-room', { room } );
+    io.to( room ).emit( 'chat-participants', rooms[room].participants || [] );
 
 }
 
@@ -128,6 +129,9 @@ const removeUserFromRoom = ( socket, room ) => {
         });
 
         rooms[room].participants = tmp;
+
+        const { io } = require( './index' );
+        io.to( room ).emit( 'chat-participants', rooms[room].participants || [] );
     }
 
 }
