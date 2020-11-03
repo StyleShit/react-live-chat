@@ -8,8 +8,11 @@
     "server": "cd server && npm run dev",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build:client": "cd client && npm install --production && npm run build && mkdir -p ../server/public && cp -r build/* ../server/public",
-    "build:server": "cd server && npm install --production",
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
+    "install:all": "npm install && npm run install:client && npm run install:server",
+    "build:client": "npm run install:client && cd client && npm run build && mkdir -p ../server/public && cp -r build/* ../server/public",
+    "build:server": "npm run install:server",
     "build": "npm run build:client && npm run build:server"
   },
   "author": "",
