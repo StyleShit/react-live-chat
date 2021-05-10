@@ -20,7 +20,11 @@ exports.handleConnection = ( socket ) => {
 
 
 // handle join room
-exports.handleJoinRoom = ( socket, { userName, room } ) => {
+exports.handleJoinRoom = ( socket, data ) => {
+
+    data = ensureJSON( data );
+
+    const { userName, room } = data;
 
     // user-related actions
     addUser( userName, socket );
@@ -241,4 +245,10 @@ const notifyTypingToRoom = ( room ) => {
     const { io } = require( './index' );
     io.to( room ).emit( 'room-typing', rooms[room].typing );
 
+};
+
+
+// ensure that a JSON data from socket is an object
+const ensureJSON = ( data ) => {
+    return ( typeof data === 'string' ) ? JSON.parse( data ) : data;
 };
