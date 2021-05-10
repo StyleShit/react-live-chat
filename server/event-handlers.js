@@ -22,15 +22,19 @@ exports.handleConnection = ( socket ) => {
 // handle join room
 exports.handleJoinRoom = ( socket, data ) => {
 
-    console.log( data );
+    const { userName, room } = data;
+
+    console.log( userName, room );
+    console.log( typeof data );
+
     // user-related actions
-    // addUser( userName, socket );
-    // addUserToRoom( socket, room );
-    // sendHistoryToUser( socket, room );
+    addUser( userName, socket );
+    addUserToRoom( socket, room );
+    sendHistoryToUser( socket, room );
 
     // room-related actions
-    // sendMessageToRoom( `${ userName } has joined the room`, room );
-    // sendMessageToRoom( `Welcome ${ userName }!`, room );
+    sendMessageToRoom( `${ userName } has joined the room`, room );
+    sendMessageToRoom( `Welcome ${ userName }!`, room );
 
 };
 
