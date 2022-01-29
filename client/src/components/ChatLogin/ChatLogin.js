@@ -19,7 +19,6 @@ function ChatLogin( { setUserName, setRoom } ) {
 		setUserName( userName );
 		setRoom( room );
 
-		// join room
 		socket.emit( 'join-room', { userName, room } );
 	};
 

@@ -3,19 +3,18 @@ import { useSocket } from '../../contexts/SocketContext';
 import './ChatMessages.css';
 
 function ChatMessages( { messages } ) {
-	// get socket id
 	const socket = useSocket();
 	const id = socket.id;
 
-	// scroll messages container on messages change
-	const messagesContainerRef = useRef( null );
+	const ref = useRef( null );
 
+	// Auto scroll on new messages.
 	useEffect( () => {
-		messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+		ref.current.scrollTop = ref.current.scrollHeight;
 	}, [ messages ] );
 
 	return (
-		<div className="chat-messages" ref={ messagesContainerRef }>
+		<div className="chat-messages" ref={ ref }>
 
 			{
 				// TODO: create different component for message
