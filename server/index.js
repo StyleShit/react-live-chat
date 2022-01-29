@@ -21,7 +21,12 @@ const server = app.listen( PORT, () => {
 	console.log( `Express server is running on port ${ PORT }...` );
 } );
 
-io.listen( server );
+io.listen( server, {
+	cors: {
+		origin: '*',
+		methods: [ 'GET', 'POST' ],
+	},
+} );
 
 io.on( 'connection', ( socket ) => {
 	handleConnection( socket );
