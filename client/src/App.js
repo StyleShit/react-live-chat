@@ -5,8 +5,7 @@ import { ChatContainer } from './components/ChatContainer';
 import './App.css';
 import { ChatLogin } from './components/ChatLogin';
 
-function App()
-{
+function App() {
 	// store user name and room
 	const [ userName, setUserName ] = useState( '' );
 	const [ room, setRoom ] = useState( '' );
@@ -18,32 +17,28 @@ function App()
 	// use socket
 	const socket = useSocket();
 
-
 	// join room & fetch messages on mount
 	useEffect( () => {
-
-
 		// get chat history from server
 		socket.on( 'chat-history', ( history ) => {
 			setMessages( history );
-		});
-
+		} );
 
 		// new message from server
 		socket.on( 'chat-message', ( message ) => {
-			setMessages( prev => {
+			setMessages( ( prev ) => {
 				return [ ...prev, message ];
-			});
-		});
+			} );
+		} );
 
 		// server sent updated participants list
-		socket.on( 'chat-participants', ( participants ) => {
-			setParticipants( participants );
-		});
+		socket.on( 'chat-participants', ( chatParticipants ) => {
+			setParticipants( chatParticipants );
+		} );
 
 		// close connection on unmount
 		return () => {
-			socket.disconnect()
+			socket.disconnect();
 		};
 
 		// eslint-disable-next-line
@@ -51,7 +46,7 @@ function App()
 
 	return (
 		<div className="App">
-			{ !userName && !room
+			{ ! userName && ! room
 				? <ChatLogin setUserName={ setUserName } setRoom={ setRoom } />
 				: <ChatContainer messages={ messages } participants={ participants } room={ room } />
 			}
