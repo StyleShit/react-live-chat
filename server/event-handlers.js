@@ -1,21 +1,30 @@
-// default chat bot props
 const CHAT_BOT = {
 	userName: 'ChatBot',
 	id: -1,
 };
 
-// handle rooms data
 const rooms = [];
-
-// handle users data
 const users = [];
 
-// handle incoming connections
+/**
+ * Handle incoming connections.
+ *
+ * @param {Object} socket - User's socket object.
+ *
+ * @returnd {void}
+ */
 exports.handleConnection = ( socket ) => {
 	console.log( 'New connection: ', socket.id );
 };
 
-// handle join room
+/**
+ * Handle user data when joining a room.
+ *
+ * @param {Object} socket - User's socket object.
+ * @param {Object} data - Connection data.
+ *
+ * @returns {void}
+ */
 exports.handleJoinRoom = ( socket, data ) => {
 	data = ensureJSON( data );
 
@@ -31,31 +40,53 @@ exports.handleJoinRoom = ( socket, data ) => {
 	sendMessageToRoom( `Welcome ${ userName }!`, room );
 };
 
-// handle new chat message
+/**
+ * Handle new chat message.
+ *
+ * @param {Object} socket - User's socket object.
+ * @param {string} message - User's message.
+ *
+ * @returns {void}
+ */
 exports.handleChatMessage = ( socket, message ) => {
-	// get the sender room
 	const room = users[ socket.id ].room;
 
-	// send their message to the room
 	sendMessageToRoom( message, room, users[ socket.id ] );
 };
 
-// handle user started typing
+/**
+ * Handle user started typing.
+ *
+ * @param {Object} socket - User's socket object.
+ *
+ * @returns {void}
+ */
 exports.handleStartTyping = ( socket ) => {
 	setUserTyping( socket );
 };
 
-// handle user stopped typing
+/**
+ * Handle user stopped typing.
+ *
+ * @param {Object} socket - User's socket object.
+ *
+ * @returns {void}
+ */
 exports.handleStopTyping = ( socket ) => {
 	setUserNotTyping( socket );
 };
 
-// handle disconnect
+/**
+ * Handle user disconnected.
+ *
+ * @param {Object} socket - User's socket object.
+ *
+ * @returns {void}
+ */
 exports.handleDisconnect = ( socket ) => {
 	if ( ! users[ socket.id ] )
 		return;
 
-	// remove user from users array and from their associated room
 	const associatedRoom = users[ socket.id ].room;
 
 	removeUserFromRoom( socket, associatedRoom );
@@ -66,7 +97,14 @@ exports.handleDisconnect = ( socket ) => {
  * Utils
  */
 
-// add user to users array
+/**
+ * Add user to users array.
+ *
+ * @param {string} userName - User's display name.
+ * @param {Object} socket - User's socket object.
+ *
+ * @returns {void}
+ */
 const addUser = ( userName, socket ) => {
 	users[ socket.id ] = {
 		userName,
@@ -74,81 +112,110 @@ const addUser = ( userName, socket ) => {
 	};
 };
 
-// remove user from users array
+/**
+ * Remove user from the users array.
+ *
+ * @param {Object} socket - User's socket object.
+ *
+ * @returns {void}
+ */
 const removeUser = ( socket ) => {
 	delete users[ socket.id ];
 };
 
-// add user as a participant to rooms array
+/**
+ * Add user as a participant in a room.
+ *
+ * @param {Object} socket - User's socket object.
+ * @param {string} room - Room name.
+ *
+ * @returns {void}
+ */
 const addUserToRoom = ( socket, room ) => {
-	// get user name from users array
-	const userName = users[ socket.id ].userName;
+	const { userName } = users[ socket.id ];
 
-	// set the user's room to the current selected room
 	users[ socket.id ].room = room;
 
-	// join user to room over socket
 	socket.join( room );
 
-	// set default values for room
 	if ( ! rooms[ room ] ) {
 		rooms[ room ] = {
-
 			participants: [],
 			messagesHistory: [],
 			typing: [],
-
 		};
 	}
 
-	// add the user to the appropriate room in rooms array
 	rooms[ room ].participants.push( { userName, id: socket.id } );
 
-	// notify other room participants that a new user has joined
+	// Notify other room participants that a new user has joined
 	const { io } = require( './index' );
 	io.to( socket.id ).emit( 'joined-room', { room } );
 	io.to( room ).emit( 'chat-participants', rooms[ room ].participants || [] );
 };
 
-// remove user from rooms array
+/**
+ * Remove user from a room.
+ *
+ * @param {Object} socket - User's socket object.
+ * @param {string} room - Room name.
+ *
+ * @returns {void}
+ */
 const removeUserFromRoom = ( socket, room ) => {
-	if ( rooms[ room ] ) {
-		// iterate over room participants and remove the user
-		const tmp = rooms[ room ].participants.filter( ( u ) => {
-			return u.id !== socket.id;
-		} );
-
-		rooms[ room ].participants = tmp;
-
-		const { io } = require( './index' );
-		io.to( room ).emit( 'chat-participants', rooms[ room ].participants || [] );
+	if ( ! rooms[ room ] ) {
+		return;
 	}
+
+	rooms[ room ].participants = rooms[ room ].participants.filter( ( u ) => {
+		return u.id !== socket.id;
+	} );
+
+	const { io } = require( './index' );
+	io.to( room ).emit( 'chat-participants', rooms[ room ].participants || [] );
 };
 
-// send message to room and push it to history
+/**
+ * Send message to room and push it to history.
+ *
+ * @param {string} message - Message content.
+ * @param {string} room - Room name.
+ * @param {Object} user - Sender data.
+ *
+ * @returns {void}
+ */
 const sendMessageToRoom = ( message, room, user = CHAT_BOT ) => {
-	// create message object
 	const messageObject = formatMessage( message, user );
 
-	// send the message to the room
 	const { io } = require( './index' );
 	io.to( room ).emit( 'chat-message', messageObject );
 
-	// push the message to the history array
 	rooms[ room ].messagesHistory.push( messageObject );
 };
 
-// send room messages history to user
+/**
+ * Send room messages history to user.
+ *
+ * @param {Object} socket - User's socket object.
+ * @param {string} room - Room name.
+ *
+ * @returns {void}
+ */
 const sendHistoryToUser = ( socket, room ) => {
-	// get history or return an empty array
 	const history = rooms[ room ].messagesHistory || [];
 
-	// send the history array
 	const { io } = require( './index' );
 	io.to( socket.id ).emit( 'chat-history', history );
 };
 
-// format message string to message object
+/**
+ * Format message string to message object.
+ *
+ * @param {string} message - Message content.
+ * @param {Object} user - User data.
+ *
+ * @returns {void}
+ */
 const formatMessage = ( message, user = CHAT_BOT ) => {
 	return {
 		message,
@@ -157,43 +224,66 @@ const formatMessage = ( message, user = CHAT_BOT ) => {
 	};
 };
 
-// add user to typing array
+/**
+ * Add user to the typers array.
+ *
+ * @param {Object} socket - User's socket object.
+ * @param {boolean} notify - Whether to notify the room.
+ *
+ * @returns {void}
+ */
 const setUserTyping = ( socket, notify = true ) => {
-	// remove user from typing array
 	setUserNotTyping( socket, false );
 
-	// get user & room
 	const user = users[ socket.id ];
-	const room = user.room;
+	const { room } = user;
 
-	// push user to typing array
 	rooms[ room ].typing.push( user );
 
-	// notify room
-	notify && notifyTypingToRoom( room );
+	if ( notify ) {
+		notifyTypingToRoom( room );
+	}
 };
 
-// remove user from typing array
+/**
+ * Remove user from the typers array.
+ *
+ * @param {Object} socket - User's socket object.
+ * @param {boolean} notify - Whether to notify the room.
+ *
+ * @returns {void}
+ */
 const setUserNotTyping = ( socket, notify = true ) => {
-	// get user & room
 	const user = users[ socket.id ];
-	const room = user.room;
+	const { room } = user;
 
-	// remove user from typing array
 	rooms[ room ].typing = rooms[ room ].typing.filter( ( i ) => ( i.id !== socket.id ) );
 
-	// notify room
-	notify && notifyTypingToRoom( room );
+	if ( notify ) {
+		notifyTypingToRoom( room );
+	}
 };
 
-// notify room about who is typing
+/**
+ * Notify a room about who is typing.
+ *
+ * @param {string} room - Room name.
+ *
+ * @returns {void}
+ */
 const notifyTypingToRoom = ( room ) => {
 	// send the typing array to the room
 	const { io } = require( './index' );
 	io.to( room ).emit( 'room-typing', rooms[ room ].typing );
 };
 
-// ensure that a JSON data from socket is an object
+/**
+ * Ensure that a JSON data from socket is an object.
+ *
+ * @param {Object|string} data
+ *
+ * @returns {Object}
+ */
 const ensureJSON = ( data ) => {
 	return ( typeof data === 'string' ) ? JSON.parse( data ) : data;
 };
