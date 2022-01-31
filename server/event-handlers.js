@@ -40,6 +40,23 @@ exports.handleJoinRoom = ( socket, data ) => {
 	sendMessageToRoom( `Welcome ${ userName }!`, room );
 };
 
+
+/**
+ * Handle user data when leaving a room.
+ *
+ * @param {Object} socket - User's socket object.
+ *
+ * @returns {void}
+ */
+exports.handleLeaveRoom = (  socket  ) => {
+
+	// remove user from users array and from their associated room
+   const associatedRoom = users[socket.id].room;
+
+   removeUserFromRoom( socket, associatedRoom );
+}
+
+
 /**
  * Handle new chat message.
  *
