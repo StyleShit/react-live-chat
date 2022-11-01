@@ -49,14 +49,10 @@ exports.handleJoinRoom = ( socket, data ) => {
  * @returns {void}
  */
 exports.handleLeaveRoom = (  socket  ) => {
+	const associatedRoom = users[ socket.id ].room;
 
-	// remove user from users array and from their associated room
-   const associatedRoom = users[socket.id].room;
-
-   removeUserFromRoom( socket, associatedRoom );
+	removeUserFromRoom( socket, associatedRoom );
 }
-
-
 /**
  * Handle new chat message.
  *
