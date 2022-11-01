@@ -36,9 +36,9 @@ io.on( 'connection', ( socket ) => {
 		handleJoinRoom( socket, data );
 	} );
 
-	socket.on( 'leave-room', ( ) => { 
-		handleLeaveRoom( socket  )
-	});
+	socket.on( 'leave-room', () => { 
+		handleLeaveRoom( socket );
+	} );
 
 	socket.on( 'chat-message', ( message ) => {
 		handleChatMessage( socket, message );
