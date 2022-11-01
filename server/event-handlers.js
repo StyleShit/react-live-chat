@@ -48,7 +48,7 @@ exports.handleJoinRoom = ( socket, data ) => {
  *
  * @returns {void}
  */
-exports.handleLeaveRoom = (  socket  ) => {
+exports.handleLeaveRoom = ( socket ) => {
 	const associatedRoom = users[ socket.id ].room;
 
 	removeUserFromRoom( socket, associatedRoom );
