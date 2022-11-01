@@ -53,6 +53,7 @@ exports.handleLeaveRoom = (  socket  ) => {
 
 	removeUserFromRoom( socket, associatedRoom );
 }
+
 /**
  * Handle new chat message.
  *
