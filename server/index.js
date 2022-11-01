@@ -11,6 +11,7 @@ const {
 	handleDisconnect,
 	handleStartTyping,
 	handleStopTyping,
+	handleLeaveRoom
 } = require( './event-handlers' );
 
 const app = express();
@@ -33,6 +34,10 @@ io.on( 'connection', ( socket ) => {
 
 	socket.on( 'join-room', ( data ) => {
 		handleJoinRoom( socket, data );
+	} );
+
+	socket.on( 'leave-room', () => { 
+		handleLeaveRoom( socket );
 	} );
 
 	socket.on( 'chat-message', ( message ) => {
